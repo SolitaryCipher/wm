@@ -1,0 +1,6 @@
+[submodule "sources/admiral"]
+	path = sources/admiral
+	url = https://github.com/sector-f/admiral
+[submodule "sources/bar"]
+	path = sources/bar
+	url = https://github.com/krypt-n/bar
