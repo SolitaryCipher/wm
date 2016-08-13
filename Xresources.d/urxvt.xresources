@@ -1,0 +1,45 @@
+URxvt*perl-lib:                 ~/.Xresources.d/urxvt-perls
+
+URxvt*perl-ext:			default,url-select
+URxvt*matcher.button:		1
+URxvt*keysym*M-u:		perl:url-select:select_next
+URxvt*url-select*launcher: 	/usr/bin/firefox
+URxvt*url-select*underline:	true
+
+URxvt*perl-ext-common:		clipboard
+URxvt*keysym*M-S-c:		perl:clipboard:copy
+URxvt*keysym*M-S-v:		perl:clipboard:paste
+URxvt*keysym*M-C-v:		perl:clipboard:paste_escaped
+
+! remaping control - c/v to copy/paste. c-s-v is now the escape.
+!URxvt*keysym*C-S-c:             ^C
+!URxvt*keysym*C-S-v:             ^V
+
+URxvt*keysym*C-S-C:		perl:clipboard:copy
+URxvt*keysym*C-S-V:		perl:clipboard:paste
+! URxvt*keysym*C-S-v:		perl:clipboard:paste_escaped
+
+URxvt*urgentOnBell:		true
+
+URxvt*scrollWithBuffer: 	true
+URxvt*scrollTtyKeypress: 	true
+URxvt*scrollTtyOutput:  	false
+URxvt*scrollBar:		false
+
+URxvt*iso14755:			false
+URxvt*iso14755_52:		false
+
+
+
+!URxvt*font:	xft:Droid Sans Mono Slashed:size=11:antialias=true
+URxvt*font:	xft:Hack:size=11:antialias=true
+! URxvt*font:	xft:Droid Sans Mono:pixelsize=15:antialias=true
+! URxvt*font:	xft:DejaVu Sans Mono:pixelsize=15:antialias=true
+! URxvt*font:	xft:Anonymous Pro:size=12:antialias=true
+! URxvt*font:	xft:Liberation Mono:size=12:antialias=true
+! URxvt*font:   xft:Inconsolata:size=11:antialias=true,xft:DejaVu Sans Mono:size=12:antialias=true
+! URxvt*font:	xft:Terminus:pixelsize=18:antialias=true
+! URxvt*font:	xft:Source Code Pro Light:size=12:antialias=true
+! URxvt*font:	xft:CamingoCode:size=12:antialias=true
+! URxvt*font:	xft:GohuFont:size=27:antialias=true
+! URxvt*font:	xft:CamingoCode:size=11:antialias=true

@@ -1,0 +1,6 @@
+XTerm*faceName:		DejaVu Sans Mono Book
+XTerm*faceSize:		10
+
+XTerm*scrollBar:	false
+XTerm*scrollTtyOutput:  false
+

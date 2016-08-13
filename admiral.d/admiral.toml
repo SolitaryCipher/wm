@@ -1,0 +1,49 @@
+[admiral]
+items = [ "left" , "windows", "reset"
+        , "right", "network", "reset"
+                 , "battery", "reset"
+                 , "clock"  , "reset"
+        ]
+# windows + layout + title
+# network
+# battery
+# time
+
+[windows]
+path = "cat /tmp/bar.fifo"
+
+[network]
+path = "/home/nick/.config/admiral.d/network_status.sh"
+shell = '/bin/bash'
+reload = 2
+
+[battery]
+path = "/home/nick/.config/admiral.d/battery_status.sh"
+shell = '/bin/bash'
+reload = 2
+
+[clock]
+path = "/home/nick/.config/admiral.d/date_status.sh"
+shell = '/bin/bash'
+reload = 15
+
+# Used for formatting lemonbar
+[reset]
+path = "echo '%{U-}%{B-}%{F-}%{-u}%{-o}  '"
+shell = '/bin/bash'
+static = true
+
+[center]
+path = "echo '%{c}'"
+shell = '/bin/bash'
+static = true
+
+[left]
+path = "echo '%{l}'"
+shell = '/bin/bash'
+static = true
+
+[right]
+path = "echo '%{r}'"
+shell = '/bin/bash'
+static = true

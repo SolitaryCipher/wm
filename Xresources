@@ -1,0 +1,8 @@
+! mostly for setting the background...
+#include "/home/nick/.Xresources.d/base16-tomorrow.dark.xresources"
+#include "/home/nick/.Xresources.d/urxvt.xresources"
+#include "/home/nick/.Xresources.d/dmenu.xresources"
+
+! #include "/home/nick/.Xresources.d/darkred.xresources"
+Xcursor.theme:		DMZ-White
+
