@@ -26,11 +26,11 @@ fg :: String -> String -> String
 fg c s = "%{F"++c++"}"++s++"%{F-}"
 
 ul :: String -> String -> String
-ul c s = "%{U"++c++"}%{+u}"++s++"%{-u}"
+ul c s = "%{U"++c++"}%{+u}"++s++"%{-u}%{U-}"
 
 
 ol :: String -> String -> String
-ol c s = "%{U"++c++"}%{+o}"++s++"%{-o}"
+ol c s = "%{U"++c++"}%{+o}"++s++"%{-o}%{U-}"
 
 barApp pipe app = hPutStrLn pipe $ start_app app
 
