@@ -27,7 +27,7 @@ OFFSET_X="+22"
 OFFSET_Y=""
 
 
-export bar=$HOME/.config/admiral.d/bar/lemonbar 
+export bar=$HOME/.config/admiral.d/lemonbar
 export admiral=$HOME/.config/admiral.d/admiral
 
 export barargs=("-f" $BAR_FONT
