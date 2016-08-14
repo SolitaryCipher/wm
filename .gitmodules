@@ -4,3 +4,6 @@
 [submodule "sources/bar"]
 	path = sources/bar
 	url = https://github.com/krypt-n/bar
+[submodule "sources/i3lock"]
+	path = sources/i3lock
+	url = git@github.com:SolitaryCipher/i3lock.git
