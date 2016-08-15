@@ -1,12 +1,11 @@
 #!/bin/bash
 
-
 #(sleep 1 && setxkbmap -option ctrl:caps) &
 (sleep 1 && gnome-keyring-daemon --components=gpg,pkcs11,secrets,ssh) &
 (sleep 1 && setxkbmap -option ctrl:nocaps) &
 
-(sleep 1 && ~/.xmonad/wallpaper.sh lightbulb.jpg ) &
-(sleep 3 && ~/.local/bin/screens.sh ) &
+(sleep 1 && wallpaper.sh lightbulb.jpg ) &
+(sleep 3 && screens.sh ) &
 
 (sleep 3 && xrdb ~/.Xresources) &
 (sleep 3 && killall nm-applet; nm-applet) &

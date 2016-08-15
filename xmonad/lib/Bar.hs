@@ -38,6 +38,6 @@ start_app app = " if [ -n $PID ] && [[ \"$(cat /proc/$PID/cmdline)\" = *urxvt* ]
                 \    kill $PID; \
                 \ fi; \
                 \ if [[ $PREV != "++app++" ]] || [ ! -d \"/proc/$PID/\" ]; then  \
-                \   urxvt -name barapp -g 22x10 -e ~/.xmonad/bar/app.sh "++app++" & PID=$!; \
+                \   urxvt -name barapp -g 22x10 -e ~/.config/admiral.d/bar_app.sh "++app++" & PID=$!; \
                 \   PREV="++app++"; \
                 \ fi"

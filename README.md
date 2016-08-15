@@ -2,7 +2,7 @@
 
 ## File Locations
     admiral.d/    -> $POME/.config/admiral.d/
-    xmoand        -> $HOME/.xmonad/
+    xmonad        -> $HOME/.xmonad/
     Xresources    -> $HOME/.Xresources
     Xresources.d/ -> $HOME/.Xresources.d/
     xsessionrc    -> $HOME/.xsessionrc
@@ -10,31 +10,32 @@
 
 ## Dependencies:
 ### Required Programs:
-    dmenu2
-    xbacklight
-    urxvt
-    scrot
-    i3lock
-    arandr
-    feh
     xmonad
-    MissingH (from cabal)
+    urxvt
+    setxkbmap
+    dmenu2
+    feh
+    xbacklight
+    arandr
     xdotool
     stalonetray
     nm-applet
-    setxkbmap
+    scrot
     Hack-font
+    MissingH      # cabal install MissingH
+    i3lock        # my version is in sources/
+    lemonbar      # my version is in sources/
+    admiral       # my version is in sources/
 
-### Required Scripts in $PATH (found in SolitaryCipher/cfg):
-    lockscreen.sh      # in /usr/local/bin atm - not linked.
-    screens.sh         # hardcoded path
-    gcal2.sh           # hardcoded path
+### Required Scripts in $PATH (found in https://www.github.com/SolitaryCipher/cfg/bin/):
+    lockscreen.sh      # run the lockscreen command 
+    screens.sh         # handle multi monitor setups
+    gcal2.sh           # console calender app. Quits on input
+    wallpaper.sh       # set the wallpaper (mine uses feh)
 
 ### Required Files and Directories:
-    $HOME/.xmonad/wallpapers/    # referenced in xmonad/wallpaper.sh
-    $HOME/.local/bin/gcal2.sh    # for the clickable bar item
-    $HOME/.local/bin/screensh.sh # probably could solve with editing $PATH
-    $HOME/.urxvt/ext             # for copy/paste perls
-    $HOME/.config/base16-env     # https://github.com/SolitaryCipher/base16-env
+    $HOME/.xmonad/wallpapers/  # referenced in xmonad/wallpaper.sh
+    $HOME/.urxvt/ext.          # for copy/paste perls
+    $HOME/.config/base16-env/  # https://github.com/SolitaryCipher/base16-env
 
 

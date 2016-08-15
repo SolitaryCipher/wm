@@ -108,7 +108,7 @@ getEnvironment var = do
 
 main = do
     bar <- myBarScript
-    app <- spawnPipe "zsh" -- spawn here to keep it global.
+    app <- spawnPipe "bash" -- spawn here to keep it global.
 
     blue      <- getEnvironment "base0D"
     darkGrey  <- getEnvironment "base02"
@@ -167,6 +167,7 @@ myKeys appBinding conf@(XConfig {XMonad.modMask = modm}) =
   , ((modm                , xK_Return     ), spawn $ XMonad.terminal conf)
   , ((modm                , xK_space      ), spawn myLauncher)
   , ((modm                , xK_p          ), spawn myLauncher)
+
   , ((modm .|.   shiftMask, xK_c          ), kill)
 
   , ((modm .|.   shiftMask, xK_q          ), io (exitWith ExitSuccess))
@@ -178,33 +179,12 @@ myKeys appBinding conf@(XConfig {XMonad.modMask = modm}) =
   , ((modm .|. shiftMask  , xK_space      ), sendMessage NextLayout)
 
   , ((modm                , xK_Tab        ), windows W.focusDown)
-
-  , ((modm                , xK_l          ), sendMessage $ Nav.Go R)
-  , ((modm                , xK_h          ), sendMessage $ Nav.Go L)
-  , ((modm                , xK_k          ), sendMessage $ Nav.Go U)
-  , ((modm                , xK_j          ), sendMessage $ Nav.Go D)
-
-  , ((modm                , xK_Right      ), sendMessage $ Nav.Go R)
-  , ((modm                , xK_Left       ), sendMessage $ Nav.Go L)
-  , ((modm                , xK_Up         ), sendMessage $ Nav.Go U)
-  , ((modm                , xK_Down       ), sendMessage $ Nav.Go D)
-
-
-  , ((modm .|. controlMask, xK_h          ), sendMessage $ MoveSplit L)
-  , ((modm .|. controlMask, xK_j          ), sendMessage $ MoveSplit D)
-  , ((modm .|. controlMask, xK_k          ), sendMessage $ MoveSplit U)
-  , ((modm .|. controlMask, xK_l          ), sendMessage $ MoveSplit R)
-
-  , ((modm .|. shiftMask  , xK_l          ), sendMessage $ Nav.Swap R)
-  , ((modm .|. shiftMask  , xK_h          ), sendMessage $ Nav.Swap L)
-  , ((modm .|. shiftMask  , xK_k          ), sendMessage $ Nav.Swap U)
-  , ((modm .|. shiftMask  , xK_j          ), sendMessage $ Nav.Swap D)
   
   , ((modm                , xK_s          ), sendMessage BSP.Swap)
   , ((modm                , xK_r          ), sendMessage Rotate)
 
-  , ((modm                , xK_n          ), sendMessage SelectNode)
-  , ((modm                , xK_m          ), sendMessage MoveNode)
+  , ((modm                , xK_m          ), sendMessage SelectNode)
+  , ((modm .|. shiftMask  , xK_m          ), sendMessage MoveNode)
 
   , ((modm                , xK_grave      ), toggleWS)
 
@@ -226,8 +206,8 @@ myKeys appBinding conf@(XConfig {XMonad.modMask = modm}) =
   , ((modm                , xK_b      ), sendMessage $ ToggleStruts)
   , ((modm                , xK_equal  ), sendMessage $ IncSpacing $ 2 )
   , ((modm                , xK_minus  ), sendMessage $ IncSpacing $ -2)
-  , ((modm .|. controlMask, xK_1      ), io $ barApp appBinding "/home/nick/.local/bin/gcal2.sh")
 
+  , ((modm .|. controlMask, xK_1      ), io $ barApp appBinding "gcal2.sh")
   , (( controlMask .|. altMask   , xK_l), spawn $ "lockscreen.sh" )
   ]
   ++
@@ -237,8 +217,22 @@ myKeys appBinding conf@(XConfig {XMonad.modMask = modm}) =
     | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
     , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
 
-myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
-    -- Set the window to floating mode and move by dragging
+  ++ -- window navigation, swapping, and moving splits. 
+     -- mod-[hjkl] and mod-[up,down,left,right] will go to the split
+     -- adding the shift modifier will swap windows, 
+     -- adding control modifier will move the split 
+    [((modm .|. m, k), f i)  
+      | (i, k) <- concat $ zipWith (zip . repeat) [L, R, U, D] keys
+      , (f, m) <- [(sendMessage . Nav.Go   , 0),
+                   (sendMessage . Nav.Swap , shiftMask),
+                   (sendMessage . MoveSplit, controlMask)]
+    ] where keys = [ [xK_Left,  xK_h] -- keys for left-y actions
+                   , [xK_Right, xK_l] -- keys for right-y actions
+                   , [xK_Up,    xK_k] -- upwards actions
+                   , [xK_Down,  xK_j] -- downwards actions
+                   ]
+
+myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $ -- Set the window to floating mode and move by dragging
     [ ((modm, button1), (\w -> focus w >> mouseMoveWindow w
                                        >> windows W.shiftMaster))
 
