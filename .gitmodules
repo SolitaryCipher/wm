@@ -7,6 +7,6 @@
 [submodule "sources/i3lock"]
 	path = sources/i3lock
 	url = git@github.com:SolitaryCipher/i3lock.git
-[submodule "base16-xresources"]
+[submodule "Xresources.d/base16-xresources"]
 	path = Xresources.d/base16-xresources
 	url = https://github.com/chriskempson/base16-xresources.git
