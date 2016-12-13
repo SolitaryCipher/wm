@@ -18,17 +18,18 @@
 # base0E="#b294bb" # Base 0E - Magenta
 # base0F="#a3685a" # Base 0F - Brown
 
-BAR_BG=$base01
+BAR_BG=$base02
 BAR_FG=$base06
 BAR_FONT="Hack-regular:size=11"
-BAR_WIDTH=""
-BAR_HEIGHT="x22"
-OFFSET_X="+22"
-OFFSET_Y=""
+BAR_WIDTH="1854"
+BAR_HEIGHT="x23"
+OFFSET_X="+0"
+OFFSET_Y="+0"
 
 
 export bar=$HOME/.config/admiral.d/lemonbar
 export admiral=$HOME/.config/admiral.d/admiral
+export MY_FIFO=/tmp/bar.fifo
 
 export barargs=("-f" $BAR_FONT
                 "-B" "#$BAR_BG"
@@ -38,19 +39,19 @@ export barargs=("-f" $BAR_FONT
 
 
 bar_critical() {
-    echo "%{B#$base08}%{F#$base00}"
+    echo "%{B#6F5353}%{F#$base07}%{U#$base08}%{+o}"
 }
 
 bar_warn() {
-    echo "%{B#$base02}%{U#$base0A}%{+o}"
+    echo "%{B#5B5750}%{U#$base0A}%{+o}"
 }
 
 bar_low() {
-    echo "%{F#$base03}%{U#$base0B}%{+o}"
+    echo "%{U#$base0B}%{F#$base05}%{+o}"
 }
 
 bar_good() {
-    echo "%{B#$base02}%{U#$base0B}%{+o}"
+    echo "%{B#56564F}%{F#$base07}%{U#$base0B}%{+o}"
 }
 
 bar_ok() {
