@@ -1,5 +1,7 @@
 . ~/.config/base16-env/base16-env.sh
 
+export PATH=$PATH:/home/nick/.local/bin
+
 eval $(gnome-keyring-daemon --components=gpg,pkcs11,secrets,ssh)
 export GNOME-KEYRING-SOCKET
 export GNOME-KEYRING-PID
