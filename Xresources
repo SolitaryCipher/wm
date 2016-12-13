@@ -1,8 +1,13 @@
 ! mostly for setting the background...
-#include "/home/nick/.Xresources.d/base16-tomorrow.dark.xresources"
-#include "/home/nick/.Xresources.d/urxvt.xresources"
-#include "/home/nick/.Xresources.d/dmenu.xresources"
 
-! #include "/home/nick/.Xresources.d/darkred.xresources"
+! env, dark, or light themes. (symbolically linked)
+!#include "/home/nick/.Xresources.d/base16-env.dark.xresources"
+!#include "/home/nick/.Xresources.d/base16.light.xresources"
+#include "/home/nick/.Xresources.d/base16.dark.xresources"
+!#include "/home/nick/.Xresources.d/base16-one.light.xresources"
+
+#include "/home/nick/.Xresources.d/urxvt.xresources"
+#include "/home/nick/.Xresources.d/rofi.xresources"
+
 Xcursor.theme:		DMZ-White
 

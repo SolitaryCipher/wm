@@ -1,0 +1,15 @@
+
+
+rofi.color-enabled: true
+! color:            bg       fg       bg-alt   hibg     gifg
+!rofi.color-window: #002b37, #002b37, #003642
+!rofi.color-normal: #002b37, #819396, #002b37, #003642, #819396
+!rofi.color-active: #002b37, #008ed4, #002b37, #003642, #008ed4
+!rofi.color-urgent: #002b37, #da4281, #002b37, #003642, #da4281
+
+! color:           bg      fg      bg-alt  hibg    gifg
+rofi.color-window: base00, base00, base03
+rofi.color-normal: base00, base05, base00, base02, base0E
+rofi.color-active: base00, base0D, base00, base02, base0E
+rofi.color-urgent: base00, base08, base00, base02, base0E
+
