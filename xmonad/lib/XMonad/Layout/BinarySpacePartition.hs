@@ -786,7 +786,7 @@ changedDirs (Rectangle _ _ ow oh) (Rectangle _ _ w h) (mx,my) = catMaybes [lr, u
 -- node focus border helpers
 ----------------------------
 updateNodeRef :: BinarySpacePartition Window -> Bool -> Rectangle -> X (BinarySpacePartition Window)
-updateNodeRef b force r = updateNodeRefC "#00ffff" b force r
+updateNodeRef b force r = updateNodeRefC "#ccf6f6" b force r
 
 updateNodeRefC:: String -> BinarySpacePartition Window -> Bool -> Rectangle -> X (BinarySpacePartition Window)
 updateNodeRefC selectColor b force r = do

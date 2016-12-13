@@ -1,49 +1,93 @@
-
-module Color    ( Color(..)
-                , ColorSet(..)
-                , getColor
+module Color    ( ColorSet(..)
+                , RGB(..)
+                , hexToRGB
+                , colorize 
+                , interpolate
+                , getB16Colors
+                , rgbTuple
                 ) where
 
-data Color = Red 
-           | Orange
-           | Yellow
-           | Green
-           | Cyan
-           | Blue 
-           | Magenta
-           | Brown
-           | Black
-           | LightGrey
-           | DarkGrey
-           | White
+import Numeric
+import System.Environment (getEnv)
+import Text.Printf (printf)
+import Control.Applicative
 
-data ColorSet = ColorSet { red       :: String
-                         , orange    :: String
-                         , yellow    :: String
-                         , green     :: String
-                         , cyan      :: String
-                         , blue      :: String
-                         , magenta   :: String
-                         , brown     :: String
-                         , black     :: String
-                         , lightGrey :: String
-                         , darkGrey  :: String
-                         , white     :: String
+
+type Color = ColorSet -> RGB
+data RGB = RGB [Integer]
+
+data ColorSet = ColorSet { red       :: RGB
+                         , orange    :: RGB
+                         , yellow    :: RGB
+                         , green     :: RGB
+                         , cyan      :: RGB
+                         , blue      :: RGB
+                         , magenta   :: RGB
+                         , brown     :: RGB
+                         , black     :: RGB
+                         , lightGrey :: RGB
+                         , darkGrey  :: RGB
+                         , white     :: RGB
                          }
 
+instance Show RGB where
+  show (RGB a) = (:) '#' $ concat $ map (printf "%s" . showHex') a
+    where showHex' c = pad $ (showHex c "")
+          pad (x:[]) = '0':[x]
+          pad x = x
 
-getColor :: ColorSet -> Color -> String
-getColor bc Red       = red       bc
-getColor bc Orange    = orange    bc
-getColor bc Yellow    = yellow    bc
-getColor bc Green     = green     bc
-getColor bc Cyan      = cyan      bc
-getColor bc Blue      = blue      bc
-getColor bc Magenta   = magenta   bc
-getColor bc Brown     = brown     bc
-getColor bc Black     = black     bc
-getColor bc DarkGrey  = darkGrey  bc
-getColor bc LightGrey = lightGrey bc
-getColor bc White     = white     bc
 
+colorize :: String -- ^ Foreground color.
+         -> String -- ^ Background color.
+         -> String -- ^ Contents.
+         -> String
+colorize fg bg = printf "<span%s%s>%s</span>" (attr "fg" fg) (attr "bg" bg)
+  where attr name value
+          | null value = ""
+          | otherwise  = printf " %scolor=\"%s\"" name value
+
+interpolate :: Double -> Color -> Color -> Color 
+interpolate p a b = interp p <$> a <*> b
+  where interp p (RGB a) (RGB b) = RGB $ map (interpolate' p) $ zip a b
+
+interpolate' :: Double -> (Integer, Integer) -> Integer
+interpolate' p (a,b) = round $ (p * (fromIntegral b)) + ((1-p) * (fromIntegral a))
+
+hexToRGB :: String -> RGB
+hexToRGB s = RGB $ map (readHex') [(take 2 s),(take 2 $ drop 2 $ s),(drop 4 s)]
+  where readHex' s = fst $ head $ readHex s
+
+--rgbTuple :: RGB -> (Float,Float,Float)
+rgbTuple (RGB (a:b:c:_)) = (f a,f b,f c) --((a !! 0),(a !! 1), (a !! 2))
+  where f a = (fromIntegral a)/ 255
+
+
+getB16Colors :: IO ColorSet
+getB16Colors = do
+    black     <- getEnv "base01" -- bar bg ...
+    darkGrey  <- getEnv "base02"
+    lightGrey <- getEnv "base03"
+    white     <- getEnv "base06"
+
+    red       <- getEnv "base08"
+    orange    <- getEnv "base09"
+    yellow    <- getEnv "base0A"
+    green     <- getEnv "base0B"
+    blue      <- getEnv "base0D"
+    cyan      <- getEnv "base0C"
+    magenta   <- getEnv "base0E"
+    brown     <- getEnv "base0F"
+    return ColorSet { blue      = hexToRGB blue
+                    , darkGrey  = hexToRGB darkGrey
+                    , lightGrey = hexToRGB "5F5960" --lightGrey
+                    , green     = hexToRGB green
+                    , black     = hexToRGB black
+                    , red       = hexToRGB red
+                    , magenta   = hexToRGB magenta
+                    , yellow    = hexToRGB yellow
+                    , orange    = hexToRGB orange
+                    , cyan      = hexToRGB cyan
+                    , brown     = hexToRGB brown
+                    , white     = hexToRGB white
+                    }
 
