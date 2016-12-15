@@ -19,40 +19,35 @@ ignoreIOException _ = return ()
 pollingFileImageWidgetNew :: FilePath -> Double -> IO FilePath -> IO Widget
 pollingFileImageWidgetNew path interval update = do
   img <- imageNewFromFile path
-  pollingImageWidgetNew img interval (update >>= imageSetFromFile img)
+  imageWidgetNew (pollUpdate interval (update >>= imageSetFromFile img)) img
 
 pollingNamedImageWidgetNew :: String -> IconSize -> Double -> IO String -> IO Widget
 pollingNamedImageWidgetNew name size interval update = do
-  img <- imageNewFromIconName name size
-  pollingImageWidgetNew img interval (update >>= \n -> imageSetFromIconName img n size)
+  img <- imageNewFromIconName name size 
+  imageWidgetNew (pollUpdate interval (update >>= \n -> imageSetFromIconName img n size)) img
 
-pollingImageWidgetNew :: Image -> Double -> IO () -> IO Widget
-pollingImageWidgetNew img interval imgupdate = do
-  box <- hBoxNew False 0
-  let icon = img -- icon <- newImageFromFile path...
-  _ <- on icon realize $ do
+
+pollUpdate :: Double -> IO () -> Image -> IO ()
+pollUpdate interval imgupdate img = do
+  _ <- on img realize $ do
     _ <- forkIO $ forever $ do
       let tryUpdate = postGUIAsync imgupdate 
       E.catch tryUpdate ignoreIOException
       threadDelay $ floor (interval * 1000000)
     return ()
-  boxPackStart box icon PackNatural 0
-  widgetShowAll box
-  return $ toWidget box
+  return ()
 
 fileImageWidgetNew :: FilePath -> IO Widget
-fileImageWidgetNew = imageWidgetNew . imageNewFromFile
-
+fileImageWidgetNew fp = imageNewFromFile fp >>= imageWidgetNew (const $ return ())
+ 
 namedImageWidgetNew :: GlibString s => s -> IconSize -> IO Widget
-namedImageWidgetNew str = imageWidgetNew . imageNewFromIconName str
+namedImageWidgetNew str size = imageNewFromIconName str size >>= imageWidgetNew (const $ return ())
 
-imageWidgetNew :: IO Image -> IO Widget
-imageWidgetNew img = do
+imageWidgetNew :: (Image -> IO ()) -> Image -> IO Widget
+imageWidgetNew imgupdate img = do
   box <- hBoxNew False 0
-  icon <- img
-  boxPackStart box icon PackNatural 0
+  imgupdate img
+  boxPackStart box img PackNatural 0
   widgetShowAll box
   return $ toWidget box
 
-
-  
