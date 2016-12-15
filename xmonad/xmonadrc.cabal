@@ -21,7 +21,7 @@ library
     Local.XMonad.Layout.BinarySpacePartition
     Local.Taffybar.Sep
     Local.Taffybar.Volume
-    Local.Taffybar.Battery2
+    Local.Taffybar.Battery
     Local.Taffybar.ImageWidget
     Local.Taffybar.Label
     Local.Taffybar.Clock

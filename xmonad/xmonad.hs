@@ -15,27 +15,30 @@ import XMonad hiding (config)
 
 import System.Exit
 import qualified Data.Map        as M
-
 import qualified XMonad.StackSet as W
 
 import XMonad.Util.EZConfig
 
-import Local.XMonad.Layout.BinarySpacePartition as BSP
-import XMonad.Layout.ResizableTile
-import Local.XMonad.Layout.Spacing
-import XMonad.Layout.WindowNavigation as Nav
-import XMonad.Layout.NoBorders
-import XMonad.Layout.BorderResize
-import XMonad.Layout.Renamed
+import qualified XMonad.Layout.WindowNavigation as Nav
+import XMonad.Layout.ResizableTile (ResizableTall(..))
+import XMonad.Layout.NoBorders     (noBorders)
+import XMonad.Layout.BorderResize  (borderResize)
+import XMonad.Layout.Renamed       (Rename(CutWordsLeft), renamed)
 
-import XMonad.Actions.CycleWS
+import Local.XMonad.Layout.Spacing (SpacingMsg(..), spacing)
+import qualified Local.XMonad.Layout.BinarySpacePartition as BSP
+
+import XMonad.Actions.CycleWS (shiftToNext, shiftToPrev
+                              , nextScreen, prevScreen
+                              , swapNextScreen, swapPrevScreen
+                              , nextWS,  prevWS, toggleWS)
 
 import XMonad.Hooks.EwmhDesktops (ewmh)
-import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.UrgencyHook
-import XMonad.Hooks.Place
+import XMonad.Hooks.ManageDocks  (ToggleStruts(..), manageDocks, docksEventHook, avoidStruts)
+import XMonad.Hooks.UrgencyHook  (withUrgencyHook, NoUrgencyHook(..))
+import XMonad.Hooks.Place        (placeHook, inBounds, fixed, underMouse)
 
---import System.Taffybar (pagerHints)
+import System.Taffybar.Hooks.PagerHints (pagerHints)
 
 import qualified Local.Color as Local
 
@@ -57,15 +60,17 @@ myNormalBorderColor  = Local.darkGrey --"#373b41" -- base 02 (tomorrow) grey
 myFocusedBorderColor = Local.magenta  --"#b294bb" -- base 0E (tomorrow) magenta
 myMarkedColor        = Local.red      --"#b5bd68" -- base 08 (tomorrow) red
 
-myLayout markedColor = renamed [CutWordsLeft 2] $ spacing 0 $ borderResize $ 
-         configurableNavigation config 
-            (   avoidStruts $ bsp  
-            ||| tiled     
-            ||| noBorders Full
-            )
+myLayout markedColor = renamed [CutWordsLeft 2] 
+                     $ spacing 0 
+                     $ borderResize 
+                     $ Nav.configurableNavigation config 
+                     (   avoidStruts $ bsp  
+                     ||| tiled     
+                     ||| noBorders Full
+                     )
   where
-    bsp     = configurableBSP markedColor 0.5
-    config  = noNavigateBorders
+    bsp     = BSP.configurableBSP markedColor 0.5
+    config  = Nav.noNavigateBorders
     tiled   = ResizableTall nmaster delta ratio slaves
     nmaster = 1      -- default num of windows in master pane
     ratio   = 1/2    -- default proportion occupied by master
@@ -85,16 +90,10 @@ newManageHook = myManageHook <+> manageDocks <+> placeHook (inBounds (underMouse
 
 main :: IO ()
 main = do
-    --bar <- myBarScript
-    --app <- spawnPipe "bash" -- spawn here to keep it global.
     colors <- Local.getB16Colors
 
-    xmonad $ ewmh $
-       --pagerHints $
-       withUrgencyHook NoUrgencyHook
-            -- $ def 
-            $ def
-            { terminal           = myTerminal
+    xmonad $ ewmh $ pagerHints $ withUrgencyHook NoUrgencyHook
+      $ def { terminal           = myTerminal
             , workspaces         = myWorkspaces
 
             , focusFollowsMouse  = myFocusFollowsMouse
@@ -112,7 +111,7 @@ main = do
             , handleEventHook    = mempty <+> docksEventHook
             , startupHook        = myStartupHook
             , manageHook         = newManageHook
-        }
+            }
         `additionalKeysP`
             [ ("<XF86MonBrightnessUp>"  , spawn "xbacklight -inc 1")
             , ("<Print>"                , spawn "scrot '%Y-%m-%d_%H%M%S.png' -e 'mv $f ~/pics/screenshots/'")
@@ -144,10 +143,10 @@ myKeys colors conf@XConfig {XMonad.modMask = modm} =
   , ((modm                , xK_Tab          ), windows W.focusDown)
   
   , ((modm                , xK_s            ), sendMessage BSP.Swap)
-  , ((modm                , xK_r            ), sendMessage Rotate)
+  , ((modm                , xK_r            ), sendMessage BSP.Rotate)
 
-  , ((modm                , xK_m            ), sendMessage SelectNode)
-  , ((modm .|. shiftMask  , xK_m            ), sendMessage MoveNode)
+  , ((modm                , xK_m            ), sendMessage BSP.SelectNode)
+  , ((modm .|. shiftMask  , xK_m            ), sendMessage BSP.MoveNode)
 
   , ((modm                , xK_grave        ), toggleWS)
   , ((modm                , xK_Escape       ), toggleWS)
@@ -185,10 +184,10 @@ myKeys colors conf@XConfig {XMonad.modMask = modm} =
      -- adding the shift modifier will swap windows, 
      -- adding control modifier will move the split 
     [((modm .|. m, k), f i)  
-      | (i, k) <- concat $ zipWith (zip . repeat) [L, R, U, D] keys'
+      | (i, k) <- concat $ zipWith (zip . repeat) [Nav.L, Nav.R, Nav.U, Nav.D] keys'
       , (f, m) <- [(sendMessage . Nav.Go   , 0),
                    (sendMessage . Nav.Swap , shiftMask),
-                   (sendMessage . MoveSplit, ctrlMask)]
+                   (sendMessage . BSP.MoveSplit, ctrlMask)]
     ] where keys' = [ [xK_Left,  xK_h] -- keys for left-y actions
                     , [xK_Right, xK_l] -- keys for right-y actions
                     , [xK_Up,    xK_k] -- upwards actions

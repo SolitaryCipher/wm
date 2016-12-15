@@ -15,7 +15,7 @@ import Graphics.UI.Gtk (rcParseString)
 import Local.Color
 import Local.Taffybar.Sep
 import Local.Taffybar.Volume
-import Local.Taffybar.Battery2
+import Local.Taffybar.Battery
 import Local.Taffybar.Workspaces
 import Local.Taffybar.Tray
 import Local.Taffybar.Notification
@@ -31,14 +31,14 @@ main = do
   colors <- getB16Colors 
   let cfg_str = ""
         ++ "style \"taffybar-default\" {"
-        ++ "  color[\"black\"] = \"" ++ show (red colors) ++ "\""
-        ++ "  color[\"white\"] = \"" ++ show (white colors) ++ "\""
-        ++ "  color[\"green\"] = \"" ++ "#00ff00" ++ "\""
-        ++ "  color[\"red\"]   = \"" ++ "#ff0000" ++ "\""
-        ++ "  font_name        = \"" ++ font      ++ "\""
+        ++ "  color[\"black\"] = \"" ++ show (red colors)      ++ "\""
+        ++ "  color[\"white\"] = \"" ++ show (white colors)    ++ "\""
+        ++ "  color[\"green\"] = \"" ++ show (green colors)    ++ "\""
+        ++ "  color[\"red\"]   = \"" ++ show (red colors)      ++ "\""
+        ++ "  font_name        = \"" ++ font                   ++ "\""
         ++ "  bg[NORMAL]       = \"" ++ show (darkGrey colors) ++ "\""
-        ++ "  fg[NORMAL]       = \"" ++ show (white colors) ++ "\""
-        ++ "  text[NORMAL]     = \"" ++ show (white colors) ++ "\""
+        ++ "  fg[NORMAL]       = \"" ++ show (white colors)    ++ "\""
+        ++ "  text[NORMAL]     = \"" ++ show (white colors)    ++ "\""
         ++ "}"
         ++ "style \"taffybar-active-window\" = \"taffybar-default\" {"
         ++ "  fg[NORMAL] = @green"
