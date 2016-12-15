@@ -17,7 +17,6 @@
     xbacklight
     arandr
     xdotool
-    stalonetray
     nm-applet
     scrot
     Hack-font
