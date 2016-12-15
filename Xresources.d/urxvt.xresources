@@ -35,7 +35,8 @@ URxvt*scrollBar:		false
 URxvt*iso14755:			false
 URxvt*iso14755_52:		false
 
-
+! coor edit
+URxvt*cursorColor: base04
 
 !URxvt*font:	xft:Droid Sans Mono Slashed:size=11:antialias=true
 !URxvt*font:	xft:Hack:size=11:antialias=true
