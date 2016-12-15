@@ -1,7 +1,7 @@
 {-# LANGUAGE PatternGuards #-}
 {-# LANGUAGE DoAndIfThenElse #-}
 {-# LANGUAGE FlexibleInstances, MultiParamTypeClasses, DeriveDataTypeable #-}
-{-# OPTIONS -fno-warn-unused-binds #-}
+
 -----------------------------------------------------------------------------
 -- |
 -- Module      :  XMonad.Layout.BinarySpacePartition
@@ -265,8 +265,8 @@ removeCurrent :: Zipper a -> Maybe (Zipper a)
 removeCurrent (Leaf _, LeftCrumb _ r:cs) = Just (r, cs)
 removeCurrent (Leaf _, RightCrumb _ l:cs) = Just (l, cs)
 removeCurrent (Leaf _, []) = Nothing
-removeCurrent (Node _ (Leaf _) r@(Node{}), cs) = Just (r, cs)
-removeCurrent (Node _ l@(Node{}) (Leaf _), cs) = Just (l, cs)
+removeCurrent (Node _ (Leaf _) r@Node{}, cs) = Just (r, cs)
+removeCurrent (Node _ l@Node{} (Leaf _), cs) = Just (l, cs)
 removeCurrent (Node _ (Leaf _) (Leaf _), cs) = Just (Leaf 0, cs)
 removeCurrent z@(Node{}, _) = goLeft z >>= removeCurrent
 
@@ -789,7 +789,7 @@ changedDirs (Rectangle _ _ ow oh) (Rectangle _ _ w h) (mx,my) = catMaybes [lr, u
 -- node focus border helpers
 ----------------------------
 updateNodeRef :: BinarySpacePartition Window -> Bool -> Rectangle -> X (BinarySpacePartition Window)
-updateNodeRef= updateNodeRefC "#ccf6f6"
+updateNodeRef= updateNodeRefC "#0000ff"
 
 updateNodeRefC:: String -> BinarySpacePartition Window -> Bool -> Rectangle -> X (BinarySpacePartition Window)
 updateNodeRefC selectColor b force r = do

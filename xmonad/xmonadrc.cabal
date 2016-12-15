@@ -16,7 +16,6 @@ cabal-version: >=1.8
 library
   exposed-modules:
     Local.Color
-    Local.Bar
     Local.Utils
     Local.XMonad.Layout.Spacing
     Local.XMonad.Layout.BinarySpacePartition

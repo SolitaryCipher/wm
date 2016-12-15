@@ -22,7 +22,7 @@ pagerConfig colors = PagerConfig {
   where surround "(" = \str -> "(" ++ str ++ ")"
         surround "[" = \str -> "[" ++ str ++ "]"
         surround s = \str -> s ++ str ++ s
-        spacer = \s -> surround " " s
+        spacer = surround " "
         escape = escapeMarkup
         setColor colors' a b = colorize (show $ a colors') (show $ b colors')
 

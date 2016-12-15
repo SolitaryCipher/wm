@@ -14,11 +14,7 @@ module Main where
 import XMonad hiding (config)
 
 import System.Exit
-import System.IO
-
 import qualified Data.Map        as M
-import qualified Data.List       as L
-import Data.String.Utils (strip)
 
 import qualified XMonad.StackSet as W
 
@@ -36,19 +32,18 @@ import XMonad.Actions.CycleWS
 
 import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.Place
 
+--import System.Taffybar (pagerHints)
+
 import qualified Local.Color as Local
-import qualified Local.Bar   as Bar
 
 
 myModMask       = mod4Mask
 altMask         = mod1Mask
 ctrlMask        = controlMask
 myTerminal      = "urxvt256c"
---myTerminal      = "gnome-terminal"
 myWorkspaces    = ["001","010","011","100","101","110","111","080","090"]
 
 myClickJustFocuses = False
@@ -88,36 +83,14 @@ myManageHook = composeAll
 
 newManageHook = myManageHook <+> manageDocks <+> placeHook (inBounds (underMouse (0, 0))) <+> manageHook def
 
-myLogHook h colors = dynamicLogWithPP def -- ( -- def
-      { ppCurrent           = barOL Local.magenta . barBG Local.lightGrey . makeClickable . pad
-      , ppVisible           = barOL Local.yellow . makeClickable . pad
-      , ppHidden            = makeClickable . pad
-      , ppUrgent            = barOL Local.red . makeClickable . pad
-      , ppWsSep             = "  "
-      , ppSep               = "  "
-      , ppLayout            = barBG Local.darkGrey . Bar.clickable "xdotool key shift+super+space" . pad
-      , ppTitle             = const ""
-      , ppOutput            = \s -> hPutStrLn h ("  "++s)
-      } -- ) 
-    where 
-        barBG c = Bar.bg $ show $ c colors
-        --barFG c = Bar.fg $ (show $ c colors)
-        barOL c = Bar.ol $ show $ c colors
-        makeClickable ws = Bar.clickable ("xdotool key super+"++getWSNumber ws) ws
-        getWSNumber w = show $ (1+) $ makeN $ L.elemIndex (strip w) myWorkspaces
-            where
-                makeN (Just n) = n
-                makeN Nothing  = 0
-
 main :: IO ()
 main = do
     --bar <- myBarScript
     --app <- spawnPipe "bash" -- spawn here to keep it global.
     colors <- Local.getB16Colors
 
-    xmonad $
-      ewmh $
-        --pagerHints $
+    xmonad $ ewmh $
+       --pagerHints $
        withUrgencyHook NoUrgencyHook
             -- $ def 
             $ def
@@ -137,7 +110,6 @@ main = do
 
             , layoutHook         = myLayout $ show $ myMarkedColor colors
             , handleEventHook    = mempty <+> docksEventHook
-            --, logHook            = myLogHook bar colors -- fadeInactiveLogHok 0xdddddddd
             , startupHook        = myStartupHook
             , manageHook         = newManageHook
         }

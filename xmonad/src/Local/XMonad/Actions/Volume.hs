@@ -141,7 +141,7 @@ modifyVolumeMuteChannels    :: MonadIO m => [String] -> (Double -> Bool -> (Doub
 
 toggleMuteChannels  cs = modifyMuteChannels   cs not
 raiseVolumeChannels cs = modifyVolumeChannels cs . (+)
-lowerVolumeChannels cs = modifyVolumeChannels cs . (subtract)
+lowerVolumeChannels cs = modifyVolumeChannels cs . subtract
 
 getVolumeChannels     = liftIO . fmap fst . amixerGetAll
 getMuteChannels       = liftIO . fmap snd . amixerGetAll
@@ -153,7 +153,7 @@ setVolumeMuteChannels cs v m = liftIO (amixerSetAll           v m cs)
 
 modifyVolumeChannels = modify getVolumeChannels setVolumeChannels
 modifyMuteChannels   = modify getMuteChannels   setMuteChannels
-modifyVolumeMuteChannels cs = modify getVolumeMuteChannels (\cs' -> uncurry (setVolumeMuteChannels cs')) cs . uncurry
+modifyVolumeMuteChannels cs = modify getVolumeMuteChannels (uncurry . setVolumeMuteChannels) cs . uncurry
 -- }}}
 -- internals {{{
 geomMean :: Floating a => [a] -> a
@@ -164,7 +164,7 @@ clip = min 100 . max 0
 
 modify :: Monad m => (arg -> m value) -> (arg -> value -> m ()) -> arg -> (value -> value) -> m value
 modify get set cs f = do
-    v <- liftM f $ get cs
+    v <- f <$> get cs
     set cs v
     return v
 
