@@ -40,7 +40,7 @@ import XMonad.Hooks.Place        (placeHook, inBounds, fixed, underMouse)
 
 import System.Taffybar.Hooks.PagerHints (pagerHints)
 
-import qualified Local.Color as Local
+import qualified Local.Color as Colors
 
 
 myModMask       = mod4Mask
@@ -52,13 +52,13 @@ myWorkspaces    = ["001","010","011","100","101","110","111","080","090"]
 myClickJustFocuses = False
 myFocusFollowsMouse = True
 
-myStartupHook = spawn "autostart"
-myLauncher _ = "start_rofi.sh"
+myStartupHook = "autostart"
+myLauncher = "start_rofi.sh"
 
 myBorderWidth        = 2
-myNormalBorderColor  = Local.darkGrey --"#373b41" -- base 02 (tomorrow) grey
-myFocusedBorderColor = Local.magenta  --"#b294bb" -- base 0E (tomorrow) magenta
-myMarkedColor        = Local.red      --"#b5bd68" -- base 08 (tomorrow) red
+myNormalBorderColor  = Colors.darkGrey --"#373b41" -- base 02 (tomorrow) grey
+myFocusedBorderColor = Colors.magenta  --"#b294bb" -- base 0E (tomorrow) magenta
+myMarkedColor        = Colors.red      --"#b5bd68" -- base 08 (tomorrow) red
 
 myLayout markedColor = renamed [CutWordsLeft 2] 
                      $ spacing 0 
@@ -90,7 +90,7 @@ newManageHook = myManageHook <+> manageDocks <+> placeHook (inBounds (underMouse
 
 main :: IO ()
 main = do
-    colors <- Local.getB16Colors
+    colors <- Colors.getB16Colors
 
     xmonad $ ewmh $ pagerHints $ withUrgencyHook NoUrgencyHook
       $ def { terminal           = myTerminal
@@ -104,12 +104,12 @@ main = do
             , borderWidth        = myBorderWidth
 
             , modMask            = myModMask
-            , keys               = myKeys colors
+            , keys               = myKeys 
             , mouseBindings      = myMouseBindings
 
             , layoutHook         = myLayout $ show $ myMarkedColor colors
             , handleEventHook    = mempty <+> docksEventHook
-            , startupHook        = myStartupHook
+            , startupHook        = spawn myStartupHook
             , manageHook         = newManageHook
             }
         `additionalKeysP`
@@ -122,12 +122,12 @@ main = do
         ]
 
 
-myKeys colors conf@XConfig {XMonad.modMask = modm} = 
+myKeys conf@XConfig {XMonad.modMask = modm} = 
   M.fromList $
   [ ((modm .|.   shiftMask, xK_Return       ), spawn $ XMonad.terminal conf)
   , ((modm                , xK_Return       ), spawn $ XMonad.terminal conf)
-  , ((modm                , xK_space        ), spawn $ myLauncher colors )
-  , ((modm                , xK_p            ), spawn $ myLauncher colors )
+  , ((modm                , xK_space        ), spawn myLauncher )
+  , ((modm                , xK_p            ), spawn myLauncher )
 
   , ((modm .|.   shiftMask, xK_c            ), kill)
 

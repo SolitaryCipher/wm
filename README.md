@@ -1,16 +1,14 @@
 # Window Manager Config
 
 ## File Locations
-    xmonad        -> $HOME/.xmonad/
     Xresources    -> $HOME/.Xresources
     Xresources.d/ -> $HOME/.Xresources.d/
     xsessionrc    -> $HOME/.xsessionrc
-    taffybar/     -> $HOME/.config/taffybar/
 
 ## Dependencies:
 ### Required Programs:
-    xmonad
-    urxvt
+    stack         # for xmonad/
+    urxvt256c
     setxkbmap
     rofi
     feh
@@ -19,19 +17,23 @@
     xdotool
     nm-applet
     scrot
-    Hack-font
-    MissingH      # cabal install MissingH
+    Fira Mono font
     i3lock        # my version is in sources/
-    taffybar      # maybe works in stack?
 
 ### Required Scripts in $PATH (found in https://www.github.com/SolitaryCipher/cfg/bin/):
     lockscreen.sh      # run the lockscreen command 
     screens.sh         # handle multi monitor setups
+    start_rofi.sh      # rofi start script
+    autostart          # autostart script (calls wallpaper.sh)
     wallpaper.sh       # set the wallpaper (mine uses feh)
 
 ### Required Files and Directories:
-    $HOME/.xmonad/wallpapers/  # referenced in xmonad/wallpaper.sh
+    $HOME/.wallpapers/         # referenced in ~/.local/bin/wallpaper.sh
     $HOME/.urxvt/ext.          # for copy/paste perls
     $HOME/.config/base16-env/  # https://github.com/SolitaryCipher/base16-env
 
+## Building XMonad
+1. Go to xmonad/
+2. run `make`
+3. Install dependancies or libraries if needed
 
