@@ -49,4 +49,4 @@ URxvt*iso14755_52:		false
 ! URxvt*font:	xft:CamingoCode:size=12:antialias=true
 ! URxvt*font:	xft:GohuFont:size=27:antialias=true
 !URxvt*font:	xft:CamingoCode:size=11:antialias=true
-URxvt*font: xft:Fira Code:regular:size=11 
+URxvt*font: xft:Fira Mono:regular:size=11 
