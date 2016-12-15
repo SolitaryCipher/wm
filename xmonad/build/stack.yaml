@@ -1,0 +1,12 @@
+resolver: lts-7.13
+packages: 
+  - ../
+extra-deps:
+  - X11-xft-0.3.1
+  - gtk-traymanager-0.1.6
+  - gtk-0.14.6
+  - alsa-mixer-0.2.0.3
+  - alsa-core-0.5.0.1
+  - xmonad-0.12
+  - xmonad-contrib-0.12
+  - taffybar-0.4.6
