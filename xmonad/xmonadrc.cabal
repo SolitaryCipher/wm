@@ -2,10 +2,10 @@
 name:          xmonadrc
 version:       0.2.0.0
 synopsis:      SolitaryCipher's xmonad and taffybar config
-homepage:      http://www.pmade.com
+homepage:      
 license:       BSD3
 license-file:  LICENSE
-author:        Peter Jones <pjones@pmade.com>
+author:        Peter Jones <pjones@pmade.com> (originally)
 maintainer:    
 copyright:     Copyright (c) 2013-2016 Peter J. Jones (modified by me)
 category:      Graphics
@@ -32,9 +32,7 @@ library
   hs-source-dirs: src
   ghc-options: -Wall -Werror
 
-  build-depends: xmonad         == 0.12
-               , xmonad-contrib == 0.12
-               , base           >= 4.0  && < 5.0
+  build-depends: base           >= 4.0  && < 5.0
                , gtk            >= 0.12 && < 0.15
                , taffybar       == 0.4.6
                , X11            >= 1.6  && < 2.0
@@ -45,6 +43,8 @@ library
                , enclosed-exceptions == 1.0.2
                , HStringTemplate == 0.8.5
                , alsa-mixer      == 0.2.0.3
+               , xmonad         == 0.12
+               , xmonad-contrib == 0.12
 ------------------------------------------------------------------------------
 executable xmonadrc
   main-is: xmonad.hs

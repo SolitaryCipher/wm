@@ -30,7 +30,7 @@ TAFFYBARWP_DEST = $(dir $(XMONADRC_DEST))/taffybar-wrapper.sh
 all: $(TMP_DUMMY)
 	stack $(STACK_OPTS) setup
 	stack $(STACK_OPTS) build
-	hlint src *.hs
+	#hlint src *.hs
 
 ################################################################################
 #test:
@@ -48,6 +48,7 @@ install: all
 	install -m 0755 $(XMONAD) $(dir $(XMONADRC_DEST))/xmonad
 	install -m 0755 $(TAFFYBARRC_SRC) $(TAFFYBARRC_DEST)
 	install -m 0755 $(TAFFYBARWP_SRC) $(TAFFYBARWP_DEST)
+	ln -sTf $(PWD) $(dir $(XMONADRC_DEST))/config
 
 ################################################################################
 restart: install
