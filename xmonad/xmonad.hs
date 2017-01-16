@@ -13,7 +13,7 @@ module Main where
 
 import XMonad hiding (config)
 
-import System.Exit
+import System.Exit (exitSuccess)
 import qualified Data.Map        as M
 import qualified XMonad.StackSet as W
 
@@ -24,6 +24,7 @@ import XMonad.Layout.ResizableTile (ResizableTall(..))
 import XMonad.Layout.NoBorders     (noBorders)
 import XMonad.Layout.BorderResize  (borderResize)
 import XMonad.Layout.Renamed       (Rename(CutWordsLeft), renamed)
+import XMonad.Layout.Minimize      (minimize)
 
 import Local.XMonad.Layout.Spacing (SpacingMsg(..), spacing)
 import qualified Local.XMonad.Layout.BinarySpacePartition as BSP
@@ -33,10 +34,12 @@ import XMonad.Actions.CycleWS (shiftToNext, shiftToPrev
                               , swapNextScreen, swapPrevScreen
                               , nextWS,  prevWS, toggleWS)
 
-import XMonad.Hooks.EwmhDesktops (ewmh)
+import XMonad.Hooks.EwmhDesktops (ewmh, fullscreenEventHook)
 import XMonad.Hooks.ManageDocks  (ToggleStruts(..), manageDocks, docksEventHook, avoidStruts)
 import XMonad.Hooks.UrgencyHook  (withUrgencyHook, NoUrgencyHook(..))
 import XMonad.Hooks.Place        (placeHook, inBounds, fixed, underMouse)
+import XMonad.Hooks.Minimize     (minimizeEventHook)
+import XMonad.Hooks.SetWMName
 
 import System.Taffybar.Hooks.PagerHints (pagerHints)
 
@@ -52,7 +55,7 @@ myWorkspaces    = ["001","010","011","100","101","110","111","080","090"]
 myClickJustFocuses = False
 myFocusFollowsMouse = True
 
-myStartupHook = "autostart"
+myStartupHook = "autostart.sh"
 myLauncher = "start_rofi.sh"
 
 myBorderWidth        = 2
@@ -61,6 +64,7 @@ myFocusedBorderColor = Colors.magenta  --"#b294bb" -- base 0E (tomorrow) magenta
 myMarkedColor        = Colors.red      --"#b5bd68" -- base 08 (tomorrow) red
 
 myLayout markedColor = renamed [CutWordsLeft 2] 
+                     $ minimize
                      $ spacing 0 
                      $ borderResize 
                      $ Nav.configurableNavigation config 
@@ -92,7 +96,7 @@ main :: IO ()
 main = do
     colors <- Colors.getB16Colors
 
-    xmonad $ ewmh $ pagerHints $ withUrgencyHook NoUrgencyHook
+    xmonad $ pagerHints $ withUrgencyHook NoUrgencyHook $ ewmh
       $ def { terminal           = myTerminal
             , workspaces         = myWorkspaces
 
@@ -108,8 +112,8 @@ main = do
             , mouseBindings      = myMouseBindings
 
             , layoutHook         = myLayout $ show $ myMarkedColor colors
-            , handleEventHook    = mempty <+> docksEventHook
-            , startupHook        = spawn myStartupHook
+            , handleEventHook    = mempty <+> docksEventHook <+> fullscreenEventHook <+> minimizeEventHook
+            , startupHook        = spawn myStartupHook >> setWMName "LG3D"
             , manageHook         = newManageHook
             }
         `additionalKeysP`
@@ -133,7 +137,7 @@ myKeys conf@XConfig {XMonad.modMask = modm} =
 
   --, ((modm                , xK_q ), spawn $ XMonad.terminal conf)
   , ((modm .|.   shiftMask, xK_q            ), io exitSuccess)
-  --, ((modm                , xK_q          ), spawn "xmonad --recompile; xmonad --restart")
+  , ((modm                , xK_q          ), spawn "xmonad --recompile; xmonad --restart")
 
   -- Resize viewed windows to the cor       rect size
   , ((modm                , xK_x            ), refresh)

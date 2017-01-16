@@ -34,7 +34,7 @@ instance Show RGB where
           pad [x] = '0':[x]
           pad x = x
 
-
+-- colorize for taffybar.
 colorize :: String -- ^ Foreground color.
          -> String -- ^ Background color.
          -> String -- ^ Contents.
